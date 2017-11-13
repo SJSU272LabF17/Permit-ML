@@ -20,6 +20,41 @@ var mongoStore = require("connect-mongo/es5")(expressSessions);
 
 var FileTool = require('./tools/FileTool');
 
+var AWS = require('aws-sdk');
+var machinelearning = new AWS.MachineLearning({
+    endpoint: 'machinelearning.us-east-1.amazonaws.com', // (String) — The endpoint URI to send requests to. The default endpoint is built from the configured region. The endpoint should be a string like 'https://{service}.{region}.amazonaws.com'.
+    accessKeyId: '',  // (String) — your AWS access key ID.
+    secretAccessKey: '' // (String) — your AWS secret access key.
+});
+// console.log(machinelearning);
+
+
+// - Get Model information
+// var params = {
+//   MLModelId: 'STRING_VALUE', /* required */
+//   Verbose: true
+// };
+// machinelearning.getMLModel(params, function(err, data) {
+//   if (err) console.log(err, err.stack); // an error occurred
+//   else     console.log(data);           // successful response
+// });
+
+
+// - Predict
+// var params = {
+//   MLModelId: 'STRING_VALUE', /* required */
+//   PredictEndpoint: 'STRING_VALUE', /* required */
+//   Record: { /* required */
+//     '<VariableName>': 'STRING_VALUE',
+//     /* '<VariableName>': ... */
+//   }
+// };
+// machinelearning.predict(params, function(err, data) {
+//   if (err) console.log(err, err.stack); // an error occurred
+//   else     console.log(data);           // successful response
+// });
+
+
 
 var app = express();
 
