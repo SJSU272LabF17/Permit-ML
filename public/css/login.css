@@ -1,0 +1,26 @@
+body{
+    background: url("https://images.unsplash.com/photo-1485083269755-a7b559a4fe5e?auto=format&fit=crop&w=1950&q=60&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D");
+    background-size: cover;
+    background-position: center;
+}
+.container-fluid .loginscreen{
+
+    padding: inherit;
+    width: 30%;
+    margin: 76px;
+}
+#panel1{
+    background-color:transparent;
+    color: burlywood;
+    font-size: xx-large
+
+}
+#panel{
+    background-color: transparent;
+    font-size: x-large;
+    border: transparent;
+    border-bottom: transparent;
+}
+#panel2{
+
+}

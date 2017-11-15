@@ -8,7 +8,8 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var cors = require('cors');
 require('./routes/passport').init(passport);
-
+//var parser = require('multer')();
+var multer =require('multer');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 
@@ -89,7 +90,7 @@ app.use(expressSessions({
 }));
 app.use(passport.initialize());
 
-var multer = require('multer');
+//var multer = require('multer');
 // var upload = multer({ dest: 'uploads/' });
 
 var storage = multer.diskStorage({
@@ -105,6 +106,20 @@ var upload = multer({ storage: storage });
 
 app.use('/', routes);
 app.use('/users', users);
+app.get('/signuphere',function (req,res) {
+    res.render("signup.ejs")
+
+});
+
+
+app.get('/form',function (req,res,next) {
+
+
+        res.render('form.ejs')
+        });
+
+
+
 
 /* GET home page. */
 app.get('/dashboard', function(req, res, next) {
@@ -118,11 +133,27 @@ app.get('/dashboard', function(req, res, next) {
             }
         ]
     }
-  res.render('dashboard/dashboard', { 
+  res.render('dashboard/dashboard', {
     title: 'Express',
     data: json 
   });
 });
+
+
+app.post('/formsubmission',function (req,res) {
+    console.log(req.body);
+    
+});
+
+
+
+
+app.get('/loginhere',function(req,res,next){
+
+   res.render('login.ejs');
+
+});
+
 
 
 app.post('/redirectHome',function (req, res) {
@@ -146,8 +177,9 @@ app.post('/logout', function(req,res) {
     res.status(200).send();
 });
 
-app.post('/login', function(req, res) {
+app.post('/afterSignin', function(req, res) {
     // console.log("post /login");
+    console.log(req.body);
     passport.authenticate('login', function(err, results) {
         // console.log("passport.authenticate(), results = "+ JSON.stringify(results));
         if(err) {
@@ -166,7 +198,8 @@ app.post('/login', function(req, res) {
     })(req, res);
 });
 
-app.post('/signup',function (req, res) {
+app.post('/afterSignup',function (req, res) {
+    console.log(req.body);
     passport.authenticate('signup', function(err, results) {
         // console.log("passport.authenticate('signup'), results = "+JSON.stringify(results));
         if(err) {
