@@ -106,8 +106,8 @@ var upload = multer({ storage: storage });
 
 app.use('/', routes);
 app.use('/users', users);
-app.get('/signuphere',function (req,res) {
-    res.render("signup.ejs")
+app.get('/registerhere',function (req,res) {
+    res.render("register.ejs")
 
 });
 
@@ -177,7 +177,7 @@ app.post('/logout', function(req,res) {
     res.status(200).send();
 });
 
-app.post('/afterSignin', function(req, res) {
+app.post('/afterLogin', function(req, res) {
     // console.log("post /login");
     console.log(req.body);
     passport.authenticate('login', function(err, results) {
@@ -198,7 +198,7 @@ app.post('/afterSignin', function(req, res) {
     })(req, res);
 });
 
-app.post('/afterSignup',function (req, res) {
+app.post('/afterRegister',function (req, res) {
     console.log(req.body);
     passport.authenticate('signup', function(err, results) {
         // console.log("passport.authenticate('signup'), results = "+JSON.stringify(results));
