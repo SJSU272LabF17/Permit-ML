@@ -27,8 +27,10 @@
     <script src="/js/main.js"></script>
     <script src="/js/user.js"></script>
 
+    <title><%= title %></title>
+
   </head>
-  <body>
+  <body onload='USR.setDataObj(<%- JSON.stringify(data) %>)'>
 
     <header id="header">
       <div class="container">
@@ -48,38 +50,52 @@
 
     <section id="user-section">
       <div class="user-container">
+        <hr>
+        <br/>
+
+        <!-- Show user or admin content based on username -->
+        <% if (data.username === "admin") { %>
+        <!-- Admin Dashboard -->
+
+        <% } else { %>
+        <!-- Regular User -->
 
         <!-- Button for Testing a New Application -->
-        <span style="margin-right:10px;">Want to test a new permit application for approval?
+        <span style="margin-right:10px;">Need to test a new permit application for approval?
         </span>
         <a href="/form" class="btn-get-started">Get Started</a>
+        <br/>
         <br/>
         <hr>
         <br/>
 
         <!-- Application List Table-->
-        <p>Current list of permit applications (click to view details):
+        <p>Current list of previously tested permit applications (click to view details):
         </p>
-        <table id="applicationSummaryTable" class="applicationTable">
-          <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Prediction</th>
-            <th>Status</th>
-          </tr>
-          <!-- TODO: populate this with object from server
-
-          <% data.applicationList.forEach(function(appSummary) { %>
-            <tr class="trSelectable clickable-row" data-href="/form/<%= appSummary.id %>" >
-              <td><%= appSummary.id %></td>
-              <td><%= appSummary.date %></td>
-              <td><%= appSummary.prediction %></td>
-              <td><%= appSummary.status %></td>
+        <table id="applicationSummaryTable" class="appTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Prediction</th>
+              <th>Status</th>
             </tr>
+          </thead>
 
-          <% }); %>
-          -->
+          <tbody>
+            <% data.applicationList.forEach(function(appSummary) { %>
+              <tr class="trSelectable clickable-row" data-href="/form" >
+                <td><%= appSummary.id %></td>
+                <td><%= appSummary.date %></td>
+                <td><%= appSummary.prediction_result %></td>
+                <td><%= appSummary.status %></td>
+              </tr>
+
+            <% }); %>
+          </tbody>
         </table>
+
+        <% } %>
 
       </div>
     </section>

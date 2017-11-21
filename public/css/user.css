@@ -12,10 +12,10 @@
 }
 
 #user-section .user-container {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);
   display: table-cell;
   margin: 0;
-  padding: 100px 20px 10px 20px;
+  padding: 80px 20px 10px 20px;
   text-align: left;
 }
 
@@ -47,7 +47,7 @@
   border: 2px solid #2dc997;
 }
 
-#user-section .applicationTable {
+#user-section table.appTable {
   width: 100%;
   border: 1px solid #fff;
   border-collapse: collapse;
@@ -55,20 +55,33 @@
   color: #fff;
 }
 
-.applicationTable tr.trSelectable {
+table.appTable tr.trSelectable {
   transition: 0.25s;
 }
 
-.applicationTable tr.trSelectable:hover {
+table.appTable tr.trSelectable:hover {
   background: #2dc997;
-  border: 1px solid #2dc997;
+  /*border: 1px solid #2dc997;*/
   cursor: pointer;
 }
 
-.applicationTable tr th, .applicationTable tr td {
+table.appTable tr th, .appTable tr td {
   border: 1px solid #fff;
   border-collapse: collapse;
   padding: 5px 8px;
+}
+
+table.appTable tbody,
+table.appTable thead { display: block; }
+
+table.appTable tbody {
+    height: 240px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+table.appTable tbody td:last-child {
+    border-right: none;
 }
 
 /*--------------------------------------------------------------

@@ -106,55 +106,57 @@ var upload = multer({ storage: storage });
 
 app.use('/', routes);
 app.use('/users', users);
+
+/*************************************
+ * Custom Routes                     *
+ *************************************/
+
+
+// Register page
 app.get('/registerhere',function (req,res) {
     res.render("register.ejs")
-
 });
 
 
+// Form page
 app.get('/form',function (req,res,next) {
-
-
-        res.render('form.ejs')
-        });
-
-
-
-
-/* GET home page. */
-app.get('/dashboard', function(req, res, next) {
-    var json = {
-        username: 'hanbing',
-        alertList: [
-            {
-                alert_id: 'A123'
-            },{
-                alert_id: 'A124'
-            }
-        ]
-    }
-  res.render('dashboard/dashboard', {
-    title: 'Express',
-    data: json 
-  });
+    res.render('form.ejs')
 });
 
 
+// User page (home screen / admin dashboard)
+app.get('/user', function(req, res) {
+    // TODO: need to send the appropriate object
+    //       for a user or admin
+    var json = {
+        profileInfo: {
+            username: '',
+            email: ''
+        },
+        applicationList: []
+    };
+
+    res.render('user.ejs', {
+        //title: 'Home - ' + req.session.user,
+        title: "Home",
+        data: json
+    });
+});
+
+
+// Submit the form
 app.post('/formsubmission',function (req,res) {
     console.log(req.body);
-    
 });
 
 
-
-
+// Login page
 app.get('/loginhere',function(req,res,next){
-
    res.render('login.ejs');
-
 });
 
 
+/*************************************/
 
 app.post('/redirectHome',function (req, res) {
     // console.log("post /redirectHome, req.session.username = "+req.session.user);
