@@ -61,7 +61,7 @@
         <!-- Regular User -->
 
         <!-- Button for Testing a New Application -->
-        <span style="margin-right:10px;">Need to test a new permit application for approval?
+        <span style="margin-right:10px;">Welcome, <%= data.profileInfo.username %>. Need to test a new permit application for approval?
         </span>
         <a href="/form" class="btn-get-started">Get Started</a>
         <br/>
@@ -84,7 +84,7 @@
 
           <tbody>
             <% data.applicationList.forEach(function(appSummary) { %>
-              <tr class="trSelectable clickable-row" data-href="/form" >
+              <tr class="trSelectable clickable-row">
                 <td><%= appSummary.id %></td>
                 <td><%= appSummary.date %></td>
                 <td><%= appSummary.prediction_result %></td>

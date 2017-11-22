@@ -123,23 +123,105 @@ app.get('/form',function (req,res,next) {
     res.render('form.ejs')
 });
 
-
 // User page (home screen / admin dashboard)
-app.get('/user', function(req, res) {
-    // TODO: need to send the appropriate object
-    //       for a user or admin
-    var json = {
+app.get('/user', function (req, res) {
+    // TODO: get permit applications from the
+    // database, to create this object correctly
+    var jsonUser = {
         profileInfo: {
-            username: '',
-            email: ''
+            username: 'test',
+            email: 'test@gmail.com'
         },
-        applicationList: []
+        applicationList: [
+            {
+                id: 'A001',
+                status:'Pending',
+                prediction_result:'TRUE',
+                date: '2017-11-17 15:21:05',
+                floor_to_ceiling_height:'8.8',
+                natural_grade_of_floor: '0.6',
+                opening_height: '39.4',
+                opening_width: '24.8',
+                opening_area: '20.8',
+                area_of_window_well: '5.6',
+                outdoor_emergency_exit: 'false',
+                bottom_of_clear_opening: '9.4',
+                distance_between_landing: '9.2',
+                area_of_landing: '11.2',
+                drainage_system_present: 'TRUE',
+                window_cover_signage: 'TRUE'
+            },
+            {
+                id: 'A002',
+                status:'Accepted',
+                prediction_result:'TRUE',
+                date: '2017-11-17 16:22:00',
+                floor_to_ceiling_height:'8.0',
+                natural_grade_of_floor: '0.5',
+                opening_height: '39.0',
+                opening_width: '24.0',
+                opening_area: '20.0',
+                area_of_window_well: '5.0',
+                outdoor_emergency_exit: 'FALSE',
+                bottom_of_clear_opening: '9.0',
+                distance_between_landing: '9.0',
+                area_of_landing: '11.0',
+                drainage_system_present: 'FALSE',
+                window_cover_signage: 'FALSE'
+            },
+            {
+                id: 'A003',
+                status:'Denied',
+                prediction_result:'FALSE',
+                date: '2017-11-18 10:10:10',
+                floor_to_ceiling_height:'8.5',
+                natural_grade_of_floor: '0.5',
+                opening_height: '39.5',
+                opening_width: '24.5',
+                opening_area: '20.5',
+                area_of_window_well: '5.5',
+                outdoor_emergency_exit: 'FALSE',
+                bottom_of_clear_opening: '9.5',
+                distance_between_landing: '9.5',
+                area_of_landing: '11.5',
+                drainage_system_present: 'TRUE',
+                window_cover_signage: 'TRUE'
+            }
+        ]
     };
 
     res.render('user.ejs', {
-        //title: 'Home - ' + req.session.user,
-        title: "Home",
-        data: json
+        title: 'Home',
+        data: jsonUser
+    });
+});
+
+// Details page
+app.post('/details', function (req, res) {
+    // TODO: get the permit application from the
+    // database, to set object values correctly
+    var jsonDetails = {
+        id: 'A001',
+        status:'Pending',
+        prediction_result:'TRUE',
+        date: '2017-11-17 15:21:05',
+        floor_to_ceiling_height:'8.8',
+        natural_grade_of_floor: '0.6',
+        opening_height: '39.4',
+        opening_width: '24.8',
+        opening_area: '20.8',
+        area_of_window_well: '5.6',
+        outdoor_emergency_exit: 'false',
+        bottom_of_clear_opening: '9.4',
+        distance_between_landing: '9.2',
+        area_of_landing: '11.2',
+        drainage_system_present: 'TRUE',
+        window_cover_signage: 'TRUE'
+    };
+
+    res.render('details.ejs', {
+        title: 'Details',
+        data: jsonDetails
     });
 });
 

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!-- CSS Style Sheets -->
+    <link href="/img/favicon.png" rel="icon">
+    <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/details.css" rel="stylesheet">
+    <link href="/stylesheets/App.css" rel="stylesheet"/>
+
+    <!-- JavaScript Libraries -->
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script src="/lib/jquery/jquery-migrate.min.js"></script>
+    <script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/wow/wow.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>
+    <script src="/lib/waypoints/waypoints.min.js"></script>
+    <script src="/lib/counterup/counterup.min.js"></script>
+    <script src="/lib/superfish/hoverIntent.js"></script>
+    <script src="/lib/superfish/superfish.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/details.js"></script>
+
+    <title><%= title %></title>
+
+  </head>
+  <body onload='DTL.setDataObj(<%- JSON.stringify(data) %>)'>
+
+    <header id="header">
+      <div class="container">
+
+        <div id="logo" class="pull-left">
+          <a href="#hero"><img src="img/logo.png" alt="" title="" /></img></a>
+        </div>
+
+        <nav id="nav-menu-container">
+          <ul class="nav-menu">
+            <li><a href="javascript:DTL.showProfile();">Profile</a></li>
+            <li><a href="javascript:DTL.logoutUser();">Logout</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section id="details-section">
+      <div class="details-container">
+        <hr>
+        <br/>
+        
+        <table id="detailsTable">
+            <tr>
+              <td class="dColLbl">ID</td>
+              <td class="dColTxt"><%= data.id %></td>
+              <td class="dColLbl">Opening Area (sq. ft.)</td>
+              <td class="dColTxt"><%= data.opening_area %></td>
+            </tr>
+            <tr>
+              <td class="dColLbl">Status</td>
+              <td class="dColTxt"><%= data.status %></td>
+              <td class="dColLbl">Area of Window Well (sq. ft.)</td>
+              <td class="dColTxt"><%= data.area_of_window_well %></td>
+            </tr>
+            <tr>
+              <td class="dColLbl">Prediction</td>
+              <td class="dColTxt"><%= data.prediction_result %></td>
+              <td class="dColLbl">Outdoor Emergency Exit?</td>
+              <td class="dColTxt"><%= data.outdoor_emergency_exit %></td>
+            </tr>
+            <tr>
+              <td class="dColLbl">Date</td>
+              <td class="dColTxt"><%= data.date %></td>
+              <td class="dColLbl">Bottom of Clear Opening (in.)</td>
+              <td class="dColTxt"><%= data.bottom_of_clear_opening %></td>
+            </tr>
+            <tr>
+              <td class="dColLbl">Floor-to-Ceiling Height (ft.)</td>
+              <td class="dColTxt"><%= data.floor_to_ceiling_height %></td>
+              <td class="dColLbl">Distance Between Landings (ft.)</td>
+              <td class="dColTxt"><%= data.distance_between_landing %></td>
+            </tr>
+            <tr>
+              <td class="dColLbl">Natural Grade of Floor</td>
+              <td class="dColTxt"><%= data.natural_grade_of_floor %></td>
+              <td class="dColLbl">Area of Landing (sq. ft.)</td>
+              <td class="dColTxt"><%= data.area_of_landing %></td>
+            </tr>
+            <tr>
+              <td class="dColLbl">Opening Height (in.)</td>
+              <td class="dColTxt"><%= data.opening_height %></td>
+              <td class="dColLbl">Drainage System Present?</td>
+              <td class="dColTxt"><%= data.drainage_system_present %></td>
+            </tr>
+            <tr>
+              <td class="dColLbl">Opening Width (in.)</td>
+              <td class="dColTxt"><%= data.opening_width %></td>
+              <td class="dColLbl">Window Cover Signage?</td>
+              <td class="dColTxt"><%= data.window_cover_signage %></td>
+            </tr>
+        </table>
+        <br/>
+        <br/>
+
+        <!-- Button to return to user's homepage -->
+        <div id="divButton">
+          <a href="/user" class="btn-back-to-home">Back to home</a>
+        </div>
+
+      </div>
+    </section>
+
+  <main id="main">
+    
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
