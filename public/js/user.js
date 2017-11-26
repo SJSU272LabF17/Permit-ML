@@ -4,19 +4,170 @@
 var USR = USR || {};
 
 USR.dataObj = {};
-USR.numCols = 4;
+USR.objMap = {};
+USR.numCols = 5;
+USR.adminCols = 6;
 USR.scrollbarWidth = 17;
 
-// Get the data from the server on load, and store it
+// Get the data from the server on load, and store it.
 USR.setDataObj = function(data) {
   this.dataObj = data;
+
+  // Fill the map.
+  var appList = data.applicationList;
+  for(var i=0; i<appList.length; i++) {
+    var app = appList[i];
+    this.objMap[app.id] = app;
+  }
+
+  this.populateTable();
 };
 
-// Show user profile information
+// Show user profile information.
 USR.showProfile = function() {};
 
-// Log out user
+// Log out user.
 USR.logoutUser = function() {};
+
+// Populate the application summary table.
+USR.populateTable = function() {
+  var bdy = $("#adminTblBody");
+
+  for(var i=0; i<this.dataObj.applicationList.length; i++) {
+    var app = this.dataObj.applicationList[i];
+
+    var row = $("<tr/>")
+      .addClass("trSelectable clickable-row");
+
+    // ID
+    $("<td/>")
+      .addClass("adminTblColId ccell")
+      .html(app.id)
+      .appendTo(row);
+
+    // User
+    $("<td/>")
+      .addClass("adminTblColUser ccell")
+      .html(app.user)
+      .appendTo(row);
+
+    // Date
+    $("<td/>")
+      .addClass("adminTblColDate ccell")
+      .html(app.date)
+      .appendTo(row);
+
+    // Prediction
+    $("<td/>")
+      .addClass("adminTblColPrediction ccell")
+      .html(this.interpretPrediction(app.prediction_result))
+      .appendTo(row);
+
+    // Status
+    var sel = this.getStatusSelect(app.status, row);
+    $("<td/>")
+      .addClass("adminTblColStatus")
+      .html(sel)
+      .appendTo(row);
+
+    // Comment
+    var txt = this.getCommentTextarea(app.comment, row);
+    $("<td/>")
+      .addClass("adminTblColComment")
+      .html(txt)
+      .appendTo(row);
+
+    bdy.append(row);
+  }
+
+  // Make table rows links
+  $(".ccell").click(function() {
+    USR.post('/details', {
+      applicationId: $(this).parent().children().first().html()
+    });
+  });
+
+  // Fix header width
+  if(bdy.length > 0) {
+    var bodyCellWidth;
+    for(var i=1; i<USR.adminCols; i++) {
+      bodyCellWidth = $("#adminSummaryTable td:nth-child("+i+")").width();
+      $("#adminSummaryTable th:nth-child("+i+")").width(bodyCellWidth);
+    }
+    bodyCellWidth = $("#adminSummaryTable td:last-child()").width();
+    $("#adminSummaryTable th:last-child()").width(bodyCellWidth+USR.scrollbarWidth);
+  } else {
+    $("#adminSummaryTable th").width("16.666%");
+  }
+};
+
+// Interpret the boolean prediction and return a string.
+USR.interpretPrediction = function(prediction) {
+  if(prediction !== undefined &&
+     prediction !== null &&
+     prediction.toLowerCase() === "true") {
+    return "Accepted";
+  } else {
+    return "Denied";
+  }
+}
+
+// Build the status select dropdown.
+USR.getStatusSelect = function(selectedValue, row) {
+  var valToUse = (selectedValue !== undefined &&
+    selectedValue !== null) ? selectedValue.toLowerCase() : "";
+  var sel = $("<select/>");
+
+  var optPending = $("<option/>")
+    .val("pending")
+    .html("Pending")
+    .appendTo(sel);
+
+  var optAccepted = $("<option/>")
+    .val("accepted")
+    .html("Accepted")
+    .appendTo(sel);
+
+  var optDenied = $("<option/>")
+    .val("denied")
+    .html("Denied")
+    .appendTo(sel);
+
+  if(valToUse === "accepted") {
+    optAccepted.prop("selected", true);
+  } else if(valToUse === "denied") {
+    optDenied.prop("selected", true);
+  } else {
+    optPending.prop("selected", true);
+  }
+
+  sel.on("change", function() {
+    $.post("/save", {
+      id: row.children().first().html(),
+      status: $(this).find(":selected").html(),
+      comment: row.children().last().html()
+    });
+  });
+
+  return sel;
+};
+
+// Build the comment textarea field.
+USR.getCommentTextarea = function(commentText, row) {
+  var txt = $("<textarea/>");
+
+  txt.val(commentText);
+
+  txt.on("blur", function() {
+    $.post("/save", {
+      id: row.children().first().html(),
+      status: row.children().eq(4).find(":selected").html(),
+      comment: $(this).val()
+    });
+  });
+
+  return txt;
+};
 
 // JQuery functions
 
@@ -41,21 +192,12 @@ USR.post = function (path, parameters) {
     // order for us to be able to submit it.
     $(document.body).append(form);
     form.submit();
-}
+};
 
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 
   // Make table rows links
   $(".clickable-row").click(function() {
-    //window.location = $(this).data("href");
-    //alert($(this).children().first().html())
-    /*
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/details", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify({
-      applicationId: $(this).children().first().html()
-    }));*/
     USR.post('/details', {
       applicationId: $(this).children().first().html()
     });
@@ -71,13 +213,20 @@ jQuery(document).ready(function($) {
 
 
   // Set the table header cell width based on the body cells, if they exist
-  if($("#applicationSummaryTable td").length) {
+  var numRows = $("#applicationSummaryTable tr").length - 1;
+  if(numRows) {
     var bodyWidth;
     for(var i=1; i<USR.numCols; i++) {
       bodyWidth = $("#applicationSummaryTable td:nth-child("+i+")").width();
       $("#applicationSummaryTable th:nth-child("+i+")").width(bodyWidth);
     }
-    $("#applicationSummaryTable th:last-child").width(bodyWidth+USR.scrollbarWidth);
+
+    bodyWidth = $("#applicationSummaryTable td:last-child()").width();
+    if(numRows > 6) {
+      $("#applicationSummaryTable th:last-child").width(bodyWidth+USR.scrollbarWidth);
+    } else {
+      $("#applicationSummaryTable th:last-child").width(bodyWidth);
+    }
   } else {
     $("#applicationSummaryTable th").width(cellWidth);
   }
@@ -95,15 +244,36 @@ $(window).resize(function() {
 
 
   // Set the table header cell width based on the body cells, if they exist
-  if($("#applicationSummaryTable td").length) {
+  var numRows = $("#applicationSummaryTable tr").length - 1;
+  if(numRows) {
     var bodyWidth;
     for(var i=1; i<USR.numCols; i++) {
       bodyWidth = $("#applicationSummaryTable td:nth-child("+i+")").width();
       $("#applicationSummaryTable th:nth-child("+i+")").width(bodyWidth);
     }
-    $("#applicationSummaryTable th:last-child").width(bodyWidth+USR.scrollbarWidth);
+
+    bodyWidth = $("#applicationSummaryTable td:last-child()").width();
+    if(numRows > 6) {
+      $("#applicationSummaryTable th:last-child").width(bodyWidth+USR.scrollbarWidth);
+    } else {
+      $("#applicationSummaryTable th:last-child").width(bodyWidth);
+    }
   } else {
     $("#applicationSummaryTable th").width(cellWidth);
+  }
+
+
+  // Fix admin table header width
+  if($("#adminTblBody").length > 0) {
+    var bodyCellWidth;
+    for(var i=1; i<USR.adminCols; i++) {
+      bodyCellWidth = $("#adminSummaryTable td:nth-child("+i+")").width();
+      $("#adminSummaryTable th:nth-child("+i+")").width(bodyCellWidth);
+    }
+    bodyCellWidth = $("#adminSummaryTable td:last-child()").width();
+    $("#adminSummaryTable th:last-child()").width(bodyCellWidth+USR.scrollbarWidth);
+  } else {
+    $("#adminSummaryTable th").width("16.666%");
   }
 
 }).resize(); // Trigger the resize handler once the script runs

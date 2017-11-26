@@ -76,12 +76,106 @@ table.appTable thead { display: block; }
 
 table.appTable tbody {
     height: 240px;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
 table.appTable tbody td:last-child {
     border-right: none;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 19px;
+  background-color: #fff;
+}
+::-webkit-scrollbar-thumb {
+  margin: 2px;
+  border-radius: 8px;
+  background-color: #999;
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 1);
+}
+
+::-moz-scrollbar {
+  -moz-appearance: none;
+  width: 19px;
+  background-color: #fff;
+}
+::-moz-scrollbar-thumb {
+  margin: 2px;
+  border-radius: 8px;
+  background-color: #999;
+  -moz-box-shadow: 0 0 1px rgba(255, 255, 255, 1);
+}
+
+/*--------------------------------------------------------------
+# Admin Section
+--------------------------------------------------------------*/
+
+#adminContainer {
+  width: 100%;
+  overflow: hidden;
+}
+#adminLeftDiv {
+  width: 60%;
+  float: left;
+  height: 500px;
+  padding: 0px 5px 0px 0px;
+}
+/*#adminCenterDiv {
+  width: 30%;
+  border: 2px solid blue;
+  float: left;
+  height: 500px;
+  padding: 0px 5px 0px 5px;
+}*/
+#adminRightDiv {
+  width: 40%;
+  float: left;
+  height: 500px;
+  padding: 0px 0px 0px 5px;
+}
+
+#adminSummaryTable {
+  width: 100%;
+  border: 1px solid #fff;
+  border-collapse: collapse;
+  font-family: "Poppins", sans-serif;
+  font-size: 8pt;
+  color: #fff;
+}
+
+#adminSummaryTable tr th, #adminSummaryTable tr td {
+  border: 1px solid #fff;
+  border-collapse: collapse;
+  padding: 3px 5px;
+}
+
+#adminSummaryTable tbody {
+    height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#adminSummaryTable tr td.adminTblColId { width: 8%; }
+#adminSummaryTable tr td.adminTblColUser { width: 15%; }
+#adminSummaryTable tr td.adminTblColDate { width: 10%; }
+#adminSummaryTable tr td.adminTblColPrediction { width: 10%; }
+#adminSummaryTable tr td.adminTblColStatus { width: 10%; }
+#adminSummaryTable tr td.adminTblColComment {
+  width: 47%;
+  position: relative;
+}
+
+#adminSummaryTable textarea {
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  margin: 2px;
+  width: 98%;
+  height: 90%;
+  position: absolute;
 }
 
 /*--------------------------------------------------------------

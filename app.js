@@ -124,12 +124,12 @@ app.get('/form',function (req,res,next) {
 });
 
 // User page (home screen / admin dashboard)
-app.get('/user', function (req, res) {
+app.get('/user/:username', function (req, res) {
     // TODO: get permit applications from the
     // database, to create this object correctly
     var jsonUser = {
         profileInfo: {
-            username: 'test',
+            username: req.params.username,
             email: 'test@gmail.com'
         },
         applicationList: [
@@ -138,6 +138,8 @@ app.get('/user', function (req, res) {
                 status:'Pending',
                 prediction_result:'TRUE',
                 date: '2017-11-17 15:21:05',
+                user: 'test1',
+                comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna',
                 floor_to_ceiling_height:'8.8',
                 natural_grade_of_floor: '0.6',
                 opening_height: '39.4',
@@ -156,6 +158,8 @@ app.get('/user', function (req, res) {
                 status:'Accepted',
                 prediction_result:'TRUE',
                 date: '2017-11-17 16:22:00',
+                user: 'test2',
+                comment: 'test2',
                 floor_to_ceiling_height:'8.0',
                 natural_grade_of_floor: '0.5',
                 opening_height: '39.0',
@@ -174,6 +178,8 @@ app.get('/user', function (req, res) {
                 status:'Denied',
                 prediction_result:'FALSE',
                 date: '2017-11-18 10:10:10',
+                user: 'test3',
+                comment: 'test3',
                 floor_to_ceiling_height:'8.5',
                 natural_grade_of_floor: '0.5',
                 opening_height: '39.5',
@@ -186,7 +192,20 @@ app.get('/user', function (req, res) {
                 area_of_landing: '11.5',
                 drainage_system_present: 'TRUE',
                 window_cover_signage: 'TRUE'
-            }
+            },
+            {id:'A004'},
+            {id:'A005'},
+            {id:'A006'},
+            {id:'A007'},
+            {id:'A008'},
+            {id:'A009'},
+            {id:'A010'},
+            {id:'A011'},
+            {id:'A012'},
+            {id:'A013'},
+            {id:'A014'},
+            {id:'A015'},
+            {id:'A016'},
         ]
     };
 
@@ -205,6 +224,8 @@ app.post('/details', function (req, res) {
         status:'Pending',
         prediction_result:'TRUE',
         date: '2017-11-17 15:21:05',
+        user: 'test1',
+        comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna',
         floor_to_ceiling_height:'8.8',
         natural_grade_of_floor: '0.6',
         opening_height: '39.4',
@@ -223,6 +244,14 @@ app.post('/details', function (req, res) {
         title: 'Details',
         data: jsonDetails
     });
+});
+
+
+// Save an application after an admin edits
+app.post('/save', function (req, res) {
+    // TODO: persist the application
+    console.log(req.body);
+    res.end();
 });
 
 

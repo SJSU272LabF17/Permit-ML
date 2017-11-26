@@ -41,7 +41,10 @@
 
         <nav id="nav-menu-container">
           <ul class="nav-menu">
+            <% if (data.profileInfo.username !== "admin") { %>
+            <!-- Only show profile menu option for regular users -->
             <li><a href="javascript:USR.showProfile();">Profile</a></li>
+            <% } %>
             <li><a href="javascript:USR.logoutUser();">Logout</a></li>
           </ul>
         </nav>
@@ -54,8 +57,29 @@
         <br/>
 
         <!-- Show user or admin content based on username -->
-        <% if (data.username === "admin") { %>
+        <% if (data.profileInfo.username === "admin") { %>
         <!-- Admin Dashboard -->
+
+        <div id="adminContainer">
+          <div id="adminLeftDiv">
+            <p>List of permit applications (click to view details, change status, or add/edit comments):</p>
+            <table id="adminSummaryTable" class="appTable">
+              <thead>
+                <tr>
+                  <th class="adminTblColId">ID</th>
+                  <th class="adminTblColUser">User</th>
+                  <th class="adminTblColDate">Date</th>
+                  <th class="adminTblColPrediction">Prediction</th>
+                  <th class="adminTblColStatus">Status</th>
+                  <th class="adminTblColComment">Comment</th>
+                </tr>
+              </thead>
+              <tbody id="adminTblBody"/>
+            </table>
+          </div>
+          <!-- <div id="adminCenterDiv"></div> -->
+          <div id="adminRightDiv"></div>
+        </div>
 
         <% } else { %>
         <!-- Regular User -->
@@ -79,6 +103,7 @@
               <th>Date</th>
               <th>Prediction</th>
               <th>Status</th>
+              <th>Admin Comments</th>
             </tr>
           </thead>
 
@@ -89,6 +114,7 @@
                 <td><%= appSummary.date %></td>
                 <td><%= appSummary.prediction_result %></td>
                 <td><%= appSummary.status %></td>
+                <td><%= appSummary.comment %></td>
               </tr>
 
             <% }); %>
