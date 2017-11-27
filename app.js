@@ -128,9 +128,10 @@ app.get('/user', function (req, res) {
     // TODO: get permit applications from the
     // database, to create this object correctly
     var jsonUser = {
-        profileInfo:{
-            username:'test',
-            email:'test@gmail.com'
+
+        profileInfo: {
+            username: 'admin',//req.params.username,
+            email: 'test@gmail.com'
         },
 
         applicationList: [
