@@ -124,12 +124,12 @@ app.get('/form',function (req,res,next) {
 });
 
 // User page (home screen / admin dashboard)
-app.get('/user/:username', function (req, res) {
+app.get('/user', function (req, res) {
     // TODO: get permit applications from the
     // database, to create this object correctly
     var jsonUser = {
         profileInfo: {
-            username: req.params.username,
+            username: 'admin',//req.params.username,
             email: 'test@gmail.com'
         },
         applicationList: [
