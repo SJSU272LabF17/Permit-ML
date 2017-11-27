@@ -20,6 +20,10 @@ var expressSessions = require("express-session");
 var mongoStore = require("connect-mongo/es5")(expressSessions);
 
 var FileTool = require('./tools/FileTool');
+var DBTool = require('./tools/DBTool');
+
+var User = require('./models/User');
+var PermitApplication = require('./models/PermitApplication');
 
 var AWS = require('aws-sdk');
 var machinelearning = new AWS.MachineLearning({
@@ -127,92 +131,27 @@ app.get('/form',function (req,res,next) {
 app.get('/user/:username', function (req, res) {
     // TODO: get permit applications from the
     // database, to create this object correctly
-    var jsonUser = {
-        profileInfo: {
-            username: req.params.username,
-            email: 'test@gmail.com'
-        },
-        applicationList: [
-            {
-                id: 'A001',
-                status:'Pending',
-                prediction_result:'TRUE',
-                date: '2017-11-17 15:21:05',
-                user: 'test1',
-                comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna',
-                floor_to_ceiling_height:'8.8',
-                natural_grade_of_floor: '0.6',
-                opening_height: '39.4',
-                opening_width: '24.8',
-                opening_area: '20.8',
-                area_of_window_well: '5.6',
-                outdoor_emergency_exit: 'false',
-                bottom_of_clear_opening: '9.4',
-                distance_between_landing: '9.2',
-                area_of_landing: '11.2',
-                drainage_system_present: 'TRUE',
-                window_cover_signage: 'TRUE'
-            },
-            {
-                id: 'A002',
-                status:'Accepted',
-                prediction_result:'TRUE',
-                date: '2017-11-17 16:22:00',
-                user: 'test2',
-                comment: 'test2',
-                floor_to_ceiling_height:'8.0',
-                natural_grade_of_floor: '0.5',
-                opening_height: '39.0',
-                opening_width: '24.0',
-                opening_area: '20.0',
-                area_of_window_well: '5.0',
-                outdoor_emergency_exit: 'FALSE',
-                bottom_of_clear_opening: '9.0',
-                distance_between_landing: '9.0',
-                area_of_landing: '11.0',
-                drainage_system_present: 'FALSE',
-                window_cover_signage: 'FALSE'
-            },
-            {
-                id: 'A003',
-                status:'Denied',
-                prediction_result:'FALSE',
-                date: '2017-11-18 10:10:10',
-                user: 'test3',
-                comment: 'test3',
-                floor_to_ceiling_height:'8.5',
-                natural_grade_of_floor: '0.5',
-                opening_height: '39.5',
-                opening_width: '24.5',
-                opening_area: '20.5',
-                area_of_window_well: '5.5',
-                outdoor_emergency_exit: 'FALSE',
-                bottom_of_clear_opening: '9.5',
-                distance_between_landing: '9.5',
-                area_of_landing: '11.5',
-                drainage_system_present: 'TRUE',
-                window_cover_signage: 'TRUE'
-            },
-            {id:'A004'},
-            {id:'A005'},
-            {id:'A006'},
-            {id:'A007'},
-            {id:'A008'},
-            {id:'A009'},
-            {id:'A010'},
-            {id:'A011'},
-            {id:'A012'},
-            {id:'A013'},
-            {id:'A014'},
-            {id:'A015'},
-            {id:'A016'},
-        ]
-    };
-
-    res.render('user.ejs', {
-        title: 'Home',
-        data: jsonUser
+    DBTool.getAllPermitApplication(function(err, applications){
+        if(err){
+            console.log(err);
+            res.redirect('/loginhere');
+        } else {
+            var jsonUser = {
+                profileInfo: {
+                    username: req.session.user.lastname + " " + req.session.user.firstname,
+                    email: req.params.username
+                },
+                applicationList: applications
+            };
+            res.render('user.ejs', {
+                title: 'Home',
+                data: jsonUser
+            });
+        }
     });
+
+
+
 });
 
 // Details page
@@ -296,30 +235,50 @@ app.post('/afterLogin', function(req, res) {
     passport.authenticate('login', function(err, results) {
         // console.log("passport.authenticate(), results = "+ JSON.stringify(results));
         if(err) {
-            return res.status(500).send({"status_code": 500, "message": "server error when login"});
+            res.redirect("/loginhere");
         }
 
         if (results.status_code == 200){
-            req.session.user = results.username;
-            req.session.current_path = '/';
+            req.session.user = results.user;
             // console.log("req.session.user = "+req.session.user);
             // console.log("session initilized, return status 200");
-            return res.status(200).send(results);
+            res.redirect("/user/"+results.user.email);
         } else{
-            return res.status(400).send(results);
+            res.redirect("/loginhere");
         }
     })(req, res);
 });
 
 app.post('/afterRegister',function (req, res) {
     console.log(req.body);
-    passport.authenticate('signup', function(err, results) {
-        // console.log("passport.authenticate('signup'), results = "+JSON.stringify(results));
-        if(err) {
-            return res.status(500).send({"statusCode": 500, "message": "server error when signup"});
-        }
-        return res.status(results.status_code).send(results);
-    })(req, res);
+    /*{ firstname: 'Jiaqi',
+    lastname: 'Qin',
+    email: 'frank.qjq@outlook.com',
+    password: '123',
+    confirm_password: '123' }*/
+    var data = req.body;
+    var email = data.email;
+    var password = data.password;
+    var confirm_password = data.confirm_password;
+    if(password !== confirm_password){
+        res.redirect("/registerhere");
+    } else{
+        User.findOne({email: email}).exec(function(err, user){
+            if(user){
+                res.redirect("/registerhere");
+            } else{
+                var userInstance = new User(data);
+                userInstance.save(function (err) {
+                    if (err) {
+                      console.log(err);
+                        res.redirect("/registerhere");
+                    } else{
+                        res.redirect("/loginhere");
+                    }
+                });
+            }
+        });
+    }
 });
 
 app.post('/files', upload.any(), function(req, res) {

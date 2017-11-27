@@ -4,7 +4,7 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	var json = {
-		username: 'hanbing',
+		username: 'jiaqi',
 		alertList: [
 			{
 				alert_id: 'A123'
