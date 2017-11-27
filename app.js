@@ -21,45 +21,10 @@ var mongoStore = require("connect-mongo/es5")(expressSessions);
 
 var FileTool = require('./tools/FileTool');
 var DBTool = require('./tools/DBTool');
+var AWSTool = require('./tools/AWSTool');
 
 var User = require('./models/User');
 var PermitApplication = require('./models/PermitApplication');
-
-var AWS = require('aws-sdk');
-var machinelearning = new AWS.MachineLearning({
-    endpoint: 'machinelearning.us-east-1.amazonaws.com', // (String) — The endpoint URI to send requests to. The default endpoint is built from the configured region. The endpoint should be a string like 'https://{service}.{region}.amazonaws.com'.
-    accessKeyId: '',  // (String) — your AWS access key ID.
-    secretAccessKey: '' // (String) — your AWS secret access key.
-});
-// console.log(machinelearning);
-
-
-// - Get Model information
-// var params = {
-//   MLModelId: 'STRING_VALUE', /* required */
-//   Verbose: true
-// };
-// machinelearning.getMLModel(params, function(err, data) {
-//   if (err) console.log(err, err.stack); // an error occurred
-//   else     console.log(data);           // successful response
-// });
-
-
-// - Predict
-// var params = {
-//   MLModelId: 'STRING_VALUE', /* required */
-//   PredictEndpoint: 'STRING_VALUE', /* required */
-//   Record: { /* required */
-//     '<VariableName>': 'STRING_VALUE',
-//     /* '<VariableName>': ... */
-//   }
-// };
-// machinelearning.predict(params, function(err, data) {
-//   if (err) console.log(err, err.stack); // an error occurred
-//   else     console.log(data);           // successful response
-// });
-
-
 
 var app = express();
 
@@ -153,7 +118,21 @@ app.get('/user/:username', function (req, res) {
 
 
 });
-
+app.get('/applications/:id', function(req, res){
+    var id = req.params.id;
+    console.log(id);
+    PermitApplication.findById(id).exec(function(err, application){
+        if (err){
+            console.error(err);
+        } else{
+            console.log(application);
+            res.render('details.ejs', {
+                title: 'Details',
+                data: application
+            });
+        }
+    });
+});
 // Details page
 app.post('/details', function (req, res) {
     // TODO: get the permit application from the
@@ -196,7 +175,50 @@ app.post('/save', function (req, res) {
 
 // Submit the form
 app.post('/formsubmission',function (req,res) {
-    console.log(req.body);
+
+
+    var data = req.body;
+    var user = req.session.user;
+    console.log(data);
+    console.log(user);
+    AWSTool.predict(data, function(result){
+        var label = result.Prediction.predictedLabel;
+        var score = result.Prediction.predictedScores;
+        console.log(label);
+        console.log(score);
+        var prediction_result;
+        if(label === '0'){
+            prediction_result = 'false';
+        } else{
+            prediction_result = 'true';
+        }
+        var json = {};
+        json.status = 'Pending';
+        json.prediction_result = prediction_result;
+        json.date = Date.now();
+        json.user = user.email;
+        json.comment = '';
+        json.floor_to_celing_height = data.floor_to_ceiling_height;
+        json.natural_grade_of_floor = data.natural_grade_of_floor;
+        json.opening_height = data.opening_height;
+        json.opening_width = data.opening_width;
+        json.opening_area = data.opening_area;
+        json.area_of_window_well = data.area_of_window_well;
+        json.outdoor_emergency_exit = data.outdoor_emergency_exit;
+        json.bottom_of_clear_opening = data.bottom_of_clear_opening;
+        json.distance_between_landing = data.distance_between_landing;
+        json.area_of_landing = data.area_of_landing;
+        json.drainage_system_present = data.drainage_system_present;
+        json.window_cover_signage = data.window_cover_signage;
+        PermitApplication.create(json, function(err, newApplication){
+            if (err) {
+                console.log(err);
+                res.redirect('/form');
+            } else{
+                res.redirect("/applications/"+newApplication._id);
+            }
+        });
+    });
 });
 
 
