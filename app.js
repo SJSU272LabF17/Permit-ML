@@ -93,9 +93,7 @@ app.get('/form',function (req,res,next) {
 });
 
 // User page (home screen / admin dashboard)
-app.get('/user/:username', function (req, res) {
-    // TODO: get permit applications from the
-    // database, to create this object correctly
+app.get('/user', function (req, res) {
     DBTool.getAllPermitApplication(function(err, applications){
         if(err){
             console.log(err);
@@ -104,7 +102,7 @@ app.get('/user/:username', function (req, res) {
             var jsonUser = {
                 profileInfo: {
                     username: req.session.user.lastname + " " + req.session.user.firstname,
-                    email: req.params.username
+                    email: req.session.user.email
                 },
                 applicationList: applications
             };
@@ -264,7 +262,7 @@ app.post('/afterLogin', function(req, res) {
             req.session.user = results.user;
             // console.log("req.session.user = "+req.session.user);
             // console.log("session initilized, return status 200");
-            res.redirect("/user/"+results.user.email);
+            res.redirect("/user");
         } else{
             res.redirect("/loginhere");
         }
