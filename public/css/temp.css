@@ -1,0 +1,52 @@
+#success_message{ display: none;}
+body{
+    background:url("../img/hero-bg.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.well-form-horizontal{
+    background-color: transparent;
+}
+#label1{
+    color:white;
+}
+#navbar1{
+    color:white;
+    font-size: 15px;
+
+}
+#text{
+    font-size: 20px;
+    opacity: 0.7;
+    color:white;
+}
+.radio{
+    color:white;
+}
+.navbar1{
+    padding-left: 1500px;
+}
+.backdrop {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: black;
+    opacity: 0.7;
+}
+
+.navbar.navbar-default {
+    background: transparent;
+    border-radius: 0px;
+    border: 0px;
+}
+
+.navbar.navbar-default .proxy-bottom {
+    border-bottom: 2px solid #FFF;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+.col-md-4 control-label{
+    color:white;
+}

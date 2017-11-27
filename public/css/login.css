@@ -1,5 +1,5 @@
 body{
-    background: url("https://images.unsplash.com/photo-1485083269755-a7b559a4fe5e?auto=format&fit=crop&w=1950&q=60&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D");
+    background: url("../img/hero-bg.jpg");
     background-size: cover;
     background-position: center;
 }
@@ -11,7 +11,7 @@ body{
 }
 #panel1{
     background-color:transparent;
-    color: burlywood;
+    color: maroon;
     font-size: xx-large
 
 }
@@ -23,4 +23,10 @@ body{
 }
 #panel2{
 
+}
+#usernamefield{
+    color:aliceblue;
+}
+#demo{
+    color:red;
 }

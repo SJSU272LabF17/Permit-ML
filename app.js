@@ -68,7 +68,7 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 
 var corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:8004',
     credentials: true,
 }
 app.use(cors(corsOptions))
@@ -120,18 +120,19 @@ app.get('/registerhere',function (req,res) {
 
 // Form page
 app.get('/form',function (req,res,next) {
-    res.render('form.ejs')
+    res.render('temp.ejs')
 });
 
 // User page (home screen / admin dashboard)
-app.get('/user/:username', function (req, res) {
+app.get('/user', function (req, res) {
     // TODO: get permit applications from the
     // database, to create this object correctly
     var jsonUser = {
-        profileInfo: {
-            username: req.params.username,
-            email: 'test@gmail.com'
+        profileInfo:{
+            username:'test',
+            email:'test@gmail.com'
         },
+
         applicationList: [
             {
                 id: 'A001',
@@ -247,6 +248,7 @@ app.post('/details', function (req, res) {
 });
 
 
+
 // Save an application after an admin edits
 app.post('/save', function (req, res) {
     // TODO: persist the application
@@ -258,7 +260,42 @@ app.post('/save', function (req, res) {
 // Submit the form
 app.post('/formsubmission',function (req,res) {
     console.log(req.body);
+    var jsonDetails = {
+        id: 'A001',
+        status:'Pending',
+        prediction_result:'TRUE',
+        date: '2017-11-17 15:21:05',
+        user: 'test1',
+        comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna',
+        floor_to_ceiling_height:'8.8',
+        natural_grade_of_floor: '0.6',
+        opening_height: '39.4',
+        opening_width: '24.8',
+        opening_area: '20.8',
+        area_of_window_well: '5.6',
+        outdoor_emergency_exit: 'false',
+        bottom_of_clear_opening: '9.4',
+        distance_between_landing: '9.2',
+        area_of_landing: '11.2',
+        drainage_system_present: 'TRUE',
+        window_cover_signage: 'TRUE'
+    };
+
+    res.render('details.ejs', {
+        title: 'Details',
+        data: jsonDetails
+    });
+
 });
+/*
+app.post('/logi',function(req,res,next){
+console.log("dvva");
+    console.log(req.body);
+    res.status(200);
+    res.redirect('/user')
+
+});
+*/
 
 
 // Login page
@@ -291,7 +328,6 @@ app.post('/logout', function(req,res) {
 });
 
 app.post('/afterLogin', function(req, res) {
-    // console.log("post /login");
     console.log(req.body);
     passport.authenticate('login', function(err, results) {
         // console.log("passport.authenticate(), results = "+ JSON.stringify(results));
@@ -302,25 +338,109 @@ app.post('/afterLogin', function(req, res) {
         if (results.status_code == 200){
             req.session.user = results.username;
             req.session.current_path = '/';
+            res.redirect('/user')
             // console.log("req.session.user = "+req.session.user);
             // console.log("session initilized, return status 200");
-            return res.status(200).send(results);
+
         } else{
-            return res.status(400).send(results);
+           return res.status(400).send(results);
+
         }
     })(req, res);
+
 });
 
 app.post('/afterRegister',function (req, res) {
     console.log(req.body);
-    passport.authenticate('signup', function(err, results) {
+ /*   passport.authenticate('signup', function(err, results) {
         // console.log("passport.authenticate('signup'), results = "+JSON.stringify(results));
         if(err) {
             return res.status(500).send({"statusCode": 500, "message": "server error when signup"});
         }
-        return res.status(results.status_code).send(results);
-    })(req, res);
+        return res.status(results.status_code).send(results);*
+
+    })(req, res);*/
+/*var jsonUser={
+    applicationList: [
+        {
+            id: 'A001',
+            status:'Pending',
+            prediction_result:'TRUE',
+            date: '2017-11-17 15:21:05',
+            user: 'test1',
+            comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna',
+            floor_to_ceiling_height:'8.8',
+            natural_grade_of_floor: '0.6',
+            opening_height: '39.4',
+            opening_width: '24.8',
+            opening_area: '20.8',
+            area_of_window_well: '5.6',
+            outdoor_emergency_exit: 'false',
+            bottom_of_clear_opening: '9.4',
+            distance_between_landing: '9.2',
+            area_of_landing: '11.2',
+            drainage_system_present: 'TRUE',
+            window_cover_signage: 'TRUE'
+        },
+        {
+            id: 'A002',
+            status:'Accepted',
+            prediction_result:'TRUE',
+            date: '2017-11-17 16:22:00',
+            user: 'test2',
+            comment: 'test2',
+            floor_to_ceiling_height:'8.0',
+            natural_grade_of_floor: '0.5',
+            opening_height: '39.0',
+            opening_width: '24.0',
+            opening_area: '20.0',
+            area_of_window_well: '5.0',
+            outdoor_emergency_exit: 'FALSE',
+            bottom_of_clear_opening: '9.0',
+            distance_between_landing: '9.0',
+            area_of_landing: '11.0',
+            drainage_system_present: 'FALSE',
+            window_cover_signage: 'FALSE'
+        },
+        {
+            id: 'A003',
+            status:'Denied',
+            prediction_result:'FALSE',
+            date: '2017-11-18 10:10:10',
+            user: 'test3',
+            comment: 'test3',
+            floor_to_ceiling_height:'8.5',
+            natural_grade_of_floor: '0.5',
+            opening_height: '39.5',
+            opening_width: '24.5',
+            opening_area: '20.5',
+            area_of_window_well: '5.5',
+            outdoor_emergency_exit: 'FALSE',
+            bottom_of_clear_opening: '9.5',
+            distance_between_landing: '9.5',
+            area_of_landing: '11.5',
+            drainage_system_present: 'TRUE',
+            window_cover_signage: 'TRUE'
+        },
+        {id:'A004'},
+        {id:'A005'},
+        {id:'A006'},
+        {id:'A007'},
+        {id:'A008'},
+        {id:'A009'},
+        {id:'A010'},
+        {id:'A011'},
+        {id:'A012'},
+        {id:'A013'},
+        {id:'A014'},
+        {id:'A015'},
+        {id:'A016'},
+    ]
+};*/
+
+res.redirect('/user');
 });
+
 
 app.post('/files', upload.any(), function(req, res) {
     console.log("====>app.post(/files)");
@@ -356,7 +476,7 @@ app.post('/files', upload.any(), function(req, res) {
     res.status(200).send(json);
 });
 
-var port = process.env.PORT || 8000;
+var port = process.env.PORT || 8004;
 var server = app.listen(port, function(){
     console.log('App listening on port %s', port);
 });
