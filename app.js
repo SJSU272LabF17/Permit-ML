@@ -20,42 +20,11 @@ var expressSessions = require("express-session");
 var mongoStore = require("connect-mongo/es5")(expressSessions);
 
 var FileTool = require('./tools/FileTool');
+var DBTool = require('./tools/DBTool');
+var AWSTool = require('./tools/AWSTool');
 
-var AWS = require('aws-sdk');
-var machinelearning = new AWS.MachineLearning({
-    endpoint: 'machinelearning.us-east-1.amazonaws.com', // (String) — The endpoint URI to send requests to. The default endpoint is built from the configured region. The endpoint should be a string like 'https://{service}.{region}.amazonaws.com'.
-    accessKeyId: '',  // (String) — your AWS access key ID.
-    secretAccessKey: '' // (String) — your AWS secret access key.
-});
-// console.log(machinelearning);
-
-
-// - Get Model information
-// var params = {
-//   MLModelId: 'STRING_VALUE', /* required */
-//   Verbose: true
-// };
-// machinelearning.getMLModel(params, function(err, data) {
-//   if (err) console.log(err, err.stack); // an error occurred
-//   else     console.log(data);           // successful response
-// });
-
-
-// - Predict
-// var params = {
-//   MLModelId: 'STRING_VALUE', /* required */
-//   PredictEndpoint: 'STRING_VALUE', /* required */
-//   Record: { /* required */
-//     '<VariableName>': 'STRING_VALUE',
-//     /* '<VariableName>': ... */
-//   }
-// };
-// machinelearning.predict(params, function(err, data) {
-//   if (err) console.log(err, err.stack); // an error occurred
-//   else     console.log(data);           // successful response
-// });
-
-
+var User = require('./models/User');
+var PermitApplication = require('./models/PermitApplication');
 
 var app = express();
 
@@ -125,98 +94,45 @@ app.get('/form',function (req,res,next) {
 
 // User page (home screen / admin dashboard)
 app.get('/user', function (req, res) {
-    // TODO: get permit applications from the
-    // database, to create this object correctly
-    var jsonUser = {
+    console.log("==>GET /user");
+    console.log(req.session.user);
+    DBTool.getAllPermitApplication(function(err, applications){
+        if(err){
+            console.log(err);
+            res.redirect('/loginhere');
+        } else {
+            var jsonUser = {
+                profileInfo: {
+                    username: req.session.user.lastname + " " + req.session.user.firstname,
+                    email: req.session.user.email
+                },
+                applicationList: applications
+            };
+            res.render('user.ejs', {
+                title: 'Home',
+                data: jsonUser
+            });
+        }
+    });
 
-        profileInfo: {
-            username: 'admin',//req.params.username,
-            email: 'test@gmail.com'
-        },
 
-        applicationList: [
-            {
-                id: 'A001',
-                status:'Pending',
-                prediction_result:'TRUE',
-                date: '2017-11-17 15:21:05',
-                user: 'test1',
-                comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna',
-                floor_to_ceiling_height:'8.8',
-                natural_grade_of_floor: '0.6',
-                opening_height: '39.4',
-                opening_width: '24.8',
-                opening_area: '20.8',
-                area_of_window_well: '5.6',
-                outdoor_emergency_exit: 'false',
-                bottom_of_clear_opening: '9.4',
-                distance_between_landing: '9.2',
-                area_of_landing: '11.2',
-                drainage_system_present: 'TRUE',
-                window_cover_signage: 'TRUE'
-            },
-            {
-                id: 'A002',
-                status:'Accepted',
-                prediction_result:'TRUE',
-                date: '2017-11-17 16:22:00',
-                user: 'test2',
-                comment: 'test2',
-                floor_to_ceiling_height:'8.0',
-                natural_grade_of_floor: '0.5',
-                opening_height: '39.0',
-                opening_width: '24.0',
-                opening_area: '20.0',
-                area_of_window_well: '5.0',
-                outdoor_emergency_exit: 'FALSE',
-                bottom_of_clear_opening: '9.0',
-                distance_between_landing: '9.0',
-                area_of_landing: '11.0',
-                drainage_system_present: 'FALSE',
-                window_cover_signage: 'FALSE'
-            },
-            {
-                id: 'A003',
-                status:'Denied',
-                prediction_result:'FALSE',
-                date: '2017-11-18 10:10:10',
-                user: 'test3',
-                comment: 'test3',
-                floor_to_ceiling_height:'8.5',
-                natural_grade_of_floor: '0.5',
-                opening_height: '39.5',
-                opening_width: '24.5',
-                opening_area: '20.5',
-                area_of_window_well: '5.5',
-                outdoor_emergency_exit: 'FALSE',
-                bottom_of_clear_opening: '9.5',
-                distance_between_landing: '9.5',
-                area_of_landing: '11.5',
-                drainage_system_present: 'TRUE',
-                window_cover_signage: 'TRUE'
-            },
-            {id:'A004'},
-            {id:'A005'},
-            {id:'A006'},
-            {id:'A007'},
-            {id:'A008'},
-            {id:'A009'},
-            {id:'A010'},
-            {id:'A011'},
-            {id:'A012'},
-            {id:'A013'},
-            {id:'A014'},
-            {id:'A015'},
-            {id:'A016'},
-        ]
-    };
 
-    res.render('user.ejs', {
-        title: 'Home',
-        data: jsonUser
+});
+app.get('/applications/:id', function(req, res){
+    var id = req.params.id;
+    console.log(id);
+    PermitApplication.findById(id).exec(function(err, application){
+        if (err){
+            console.error(err);
+        } else{
+            console.log(application);
+            res.render('details.ejs', {
+                title: 'Details',
+                data: application
+            });
+        }
     });
 });
-
 // Details page
 app.post('/details', function (req, res) {
     // TODO: get the permit application from the
@@ -260,43 +176,50 @@ app.post('/save', function (req, res) {
 
 // Submit the form
 app.post('/formsubmission',function (req,res) {
-    console.log(req.body);
-    var jsonDetails = {
-        id: 'A001',
-        status:'Pending',
-        prediction_result:'TRUE',
-        date: '2017-11-17 15:21:05',
-        user: 'test1',
-        comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna',
-        floor_to_ceiling_height:'8.8',
-        natural_grade_of_floor: '0.6',
-        opening_height: '39.4',
-        opening_width: '24.8',
-        opening_area: '20.8',
-        area_of_window_well: '5.6',
-        outdoor_emergency_exit: 'false',
-        bottom_of_clear_opening: '9.4',
-        distance_between_landing: '9.2',
-        area_of_landing: '11.2',
-        drainage_system_present: 'TRUE',
-        window_cover_signage: 'TRUE'
-    };
-
-    res.render('details.ejs', {
-        title: 'Details',
-        data: jsonDetails
+    var data = req.body;
+    var user = req.session.user;
+    console.log(data);
+    console.log(user);
+    AWSTool.predict(data, function(result){
+        var label = result.Prediction.predictedLabel;
+        var score = result.Prediction.predictedScores;
+        console.log(label);
+        console.log(score);
+        var prediction_result;
+        if(label === '0'){
+            prediction_result = 'false';
+        } else{
+            prediction_result = 'true';
+        }
+        var json = {};
+        json.status = 'Pending';
+        json.prediction_result = prediction_result;
+        json.date = Date.now();
+        json.user = user.email;
+        json.comment = '';
+        json.floor_to_celing_height = data.floor_to_ceiling_height;
+        json.natural_grade_of_floor = data.natural_grade_of_floor;
+        json.opening_height = data.opening_height;
+        json.opening_width = data.opening_width;
+        json.opening_area = data.opening_area;
+        json.area_of_window_well = data.area_of_window_well;
+        json.outdoor_emergency_exit = data.outdoor_emergency_exit;
+        json.bottom_of_clear_opening = data.bottom_of_clear_opening;
+        json.distance_between_landing = data.distance_between_landing;
+        json.area_of_landing = data.area_of_landing;
+        json.drainage_system_present = data.drainage_system_present;
+        json.window_cover_signage = data.window_cover_signage;
+        PermitApplication.create(json, function(err, newApplication){
+            if (err) {
+                console.log(err);
+                res.redirect('/form');
+            } else{
+                res.redirect("/applications/"+newApplication._id);
+            }
+        });
     });
-
 });
-/*
-app.post('/logi',function(req,res,next){
-console.log("dvva");
-    console.log(req.body);
-    res.status(200);
-    res.redirect('/user')
 
-});
-*/
 
 
 // Login page
@@ -333,19 +256,34 @@ app.post('/afterLogin', function(req, res) {
     passport.authenticate('login', function(err, results) {
         // console.log("passport.authenticate(), results = "+ JSON.stringify(results));
         if(err) {
-            return res.status(500).send({"status_code": 500, "message": "server error when login"});
+            res.redirect("/loginhere");
         }
 
         if (results.status_code == 200){
-            req.session.user = results.username;
-            req.session.current_path = '/';
-            res.redirect('/user')
-            // console.log("req.session.user = "+req.session.user);
+            req.session.user = results.user;
+            console.log("req.session.user = "+req.session.user);
             // console.log("session initilized, return status 200");
-
+            // res.redirect("/user");
+            DBTool.getAllPermitApplication(function(err, applications){
+        if(err){
+            console.log(err);
+            res.redirect('/loginhere');
+        } else {
+            var jsonUser = {
+                profileInfo: {
+                    username: req.session.user.lastname + " " + req.session.user.firstname,
+                    email: req.session.user.email
+                },
+                applicationList: applications
+            };
+            res.render('user.ejs', {
+                title: 'Home',
+                data: jsonUser
+            });
+        }
+    });
         } else{
-           return res.status(400).send(results);
-
+            res.redirect("/loginhere");
         }
     })(req, res);
 
@@ -353,93 +291,34 @@ app.post('/afterLogin', function(req, res) {
 
 app.post('/afterRegister',function (req, res) {
     console.log(req.body);
- /*   passport.authenticate('signup', function(err, results) {
-        // console.log("passport.authenticate('signup'), results = "+JSON.stringify(results));
-        if(err) {
-            return res.status(500).send({"statusCode": 500, "message": "server error when signup"});
-        }
-        return res.status(results.status_code).send(results);*
-
-    })(req, res);*/
-/*var jsonUser={
-    applicationList: [
-        {
-            id: 'A001',
-            status:'Pending',
-            prediction_result:'TRUE',
-            date: '2017-11-17 15:21:05',
-            user: 'test1',
-            comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna',
-            floor_to_ceiling_height:'8.8',
-            natural_grade_of_floor: '0.6',
-            opening_height: '39.4',
-            opening_width: '24.8',
-            opening_area: '20.8',
-            area_of_window_well: '5.6',
-            outdoor_emergency_exit: 'false',
-            bottom_of_clear_opening: '9.4',
-            distance_between_landing: '9.2',
-            area_of_landing: '11.2',
-            drainage_system_present: 'TRUE',
-            window_cover_signage: 'TRUE'
-        },
-        {
-            id: 'A002',
-            status:'Accepted',
-            prediction_result:'TRUE',
-            date: '2017-11-17 16:22:00',
-            user: 'test2',
-            comment: 'test2',
-            floor_to_ceiling_height:'8.0',
-            natural_grade_of_floor: '0.5',
-            opening_height: '39.0',
-            opening_width: '24.0',
-            opening_area: '20.0',
-            area_of_window_well: '5.0',
-            outdoor_emergency_exit: 'FALSE',
-            bottom_of_clear_opening: '9.0',
-            distance_between_landing: '9.0',
-            area_of_landing: '11.0',
-            drainage_system_present: 'FALSE',
-            window_cover_signage: 'FALSE'
-        },
-        {
-            id: 'A003',
-            status:'Denied',
-            prediction_result:'FALSE',
-            date: '2017-11-18 10:10:10',
-            user: 'test3',
-            comment: 'test3',
-            floor_to_ceiling_height:'8.5',
-            natural_grade_of_floor: '0.5',
-            opening_height: '39.5',
-            opening_width: '24.5',
-            opening_area: '20.5',
-            area_of_window_well: '5.5',
-            outdoor_emergency_exit: 'FALSE',
-            bottom_of_clear_opening: '9.5',
-            distance_between_landing: '9.5',
-            area_of_landing: '11.5',
-            drainage_system_present: 'TRUE',
-            window_cover_signage: 'TRUE'
-        },
-        {id:'A004'},
-        {id:'A005'},
-        {id:'A006'},
-        {id:'A007'},
-        {id:'A008'},
-        {id:'A009'},
-        {id:'A010'},
-        {id:'A011'},
-        {id:'A012'},
-        {id:'A013'},
-        {id:'A014'},
-        {id:'A015'},
-        {id:'A016'},
-    ]
-};*/
-
-res.redirect('/user');
+    /*{ firstname: 'Jiaqi',
+    lastname: 'Qin',
+    email: 'frank.qjq@outlook.com',
+    password: '123',
+    confirm_password: '123' }*/
+    var data = req.body;
+    var email = data.email;
+    var password = data.password;
+    var confirm_password = data.confirm_password;
+    if(password !== confirm_password){
+        res.redirect("/registerhere");
+    } else{
+        User.findOne({email: email}).exec(function(err, user){
+            if(user){
+                res.redirect("/registerhere");
+            } else{
+                var userInstance = new User(data);
+                userInstance.save(function (err) {
+                    if (err) {
+                      console.log(err);
+                        res.redirect("/registerhere");
+                    } else{
+                        res.redirect("/loginhere");
+                    }
+                });
+            }
+        });
+    }
 });
 
 
