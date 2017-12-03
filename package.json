@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "setup-mongodb": "sh ./data/import-data.sh",
+    "prestart": "npm run setup-mongodb",
     "start": "node app.js",
     "test": "mocha --recursive --exit"
   },

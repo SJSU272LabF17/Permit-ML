@@ -1,0 +1,225 @@
+<html>
+
+<head>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+
+    <link rel="stylesheet"
+      href="./css/temp.css">
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <script src="../public/js/temp.js"></script></head>
+<body>
+<div class="backdrop"></div>
+
+<nav class="navbar navbar-default">
+                <ul id="navbar1"class="nav navbar-nav pull-right">
+
+                    <li><a class="navbar1"id="navbar1" href="/user">Profile</a></li>
+                    <li><a class="navbar1"id="navbar1"href="/logout">LOGOUT</a></li>
+                </ul>
+                <div class="proxy-bottom"></div>
+            </div>
+</nav>
+
+<div class="container">
+    <p id="text">Select Type of Permit</p>
+    <li>
+        <select class="selectpicker">
+            <option value="other">Other</option>
+            <option value="basement">Basement</option>
+        </select>
+    </li>
+    <form class="well-  form-horizontal hidden" action="/formsubmission" method="post"  id="contact_form">
+
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" id="label1">Floor-to-Ceiling Height(ft.)</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <input  name="fcheight" placeholder="" class="form-control"  type="text">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text input-->
+
+            <div class="form-group">
+                <label class="col-md-4 control-label"  id="label1">Natural Grade of Floor</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <input name="ngrade" placeholder="" class="form-control"  type="text">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" id="label1">Opening Height(in.)</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <input name="opheight" placeholder="" class="form-control"  type="text">
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Text input-->
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" id="label1">Opening Width(in.)</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <input name="opwidth" placeholder="" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text input-->
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" id="label1">Opening Area(sq.ft.)</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <input name="oparea" placeholder="" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text input-->
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" id="label1">Area of Window Well(sq.ft.)</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <input name="a_window_well" placeholder="" class="form-control"  type="text">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6 col-lg-6">
+
+
+            <!-- Text input-->
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" id="label1">Bottom of Clear Opening(in.)</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <input name="bottom_clear_opening" placeholder="" class="form-control"  type="text">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" id="label1">Area of Landing(sq.ft)</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <input name="alanding" placeholder="" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" id="label1">Distance Between Landings(ft.)</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <input name="dblanding" placeholder="" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+
+            <!-- radio checks -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" id="label1">Outdoor Emergency Exit?</label>
+                <div class="col-md-4">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" id="label1" name="outdoorexit" value="true" />True
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" id="label1" name="outdoorexit" value="false" /> False
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" id="label1">Drainage System Present?</label>
+                <div class="col-md-4">
+                    <div class="radio">
+                        <label>
+                            <input type="radio"  id="label1"name="drainagepresent" value="true" />True
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" id="label1" name="drainagepresent" value="false" /> False
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" id="label1">Window Cover Signage?</label>
+                <div class="col-md-4">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" id="label1" name="windowcover" value="true" />True
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" id="label1" name="windowcover" value="false" /> False
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Text area -->
+
+
+
+            <!-- Success message -->
+        </div>
+    </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <!-- Button -->
+                <div class="form-group text-center">
+                    <label class="control-label"></label>
+
+                    <button type="submit" class="btn btn-warning" >Send <span class="glyphicon glyphicon-send"></span></button>
+                    <a href="registerhere" class="btn btn-danger">Cancel</a>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div><!-- /.container -->
+<script>
+    $("select.selectpicker").selectpicker();
+    $("select.selectpicker").on("changed.bs.select", function (e) {
+        switch ($(e.currentTarget).val()) {
+            case 'basement':
+                $("#contact_form").toggleClass("hidden");
+                break;
+        }
+    });
+</script>
+</body>
+</html>
