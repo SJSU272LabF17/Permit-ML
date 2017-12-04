@@ -195,7 +195,7 @@ $(document).ready(function($) {
 
   // Make table rows links
   $(".clickable-row").click(function() {
-    $.get('/applications/' + $(this).children().first().html());
+      window.location.href = '/applications/' + $(this).children().first().html();
     /*USR.post('/details', {
       applicationId: $(this).children().first().html()
     });*/
