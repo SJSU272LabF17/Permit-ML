@@ -9,18 +9,18 @@ var PermitApplicationSchema = Schema(
         date: {type: Date, required: true, default: Date.now()},
         user: {type: String, required: true},
         comment: {type: String, required: false},
-        floor_to_ceiling_height: {type: Number, required: false},
-        natural_grade_of_floor: {type: Number, required: false},
-        opening_height: {type: Number, required: false},
-        opening_width: {type: Number, required: false},
-        opening_area: {type: Number, required: false},
-        area_of_window_well: {type: Number, required: false},
-        outdoor_emergency_exit: {type: Boolean, required: false},
-        bottom_of_clear_opening: {type: Number, required: false},
-        distance_between_landing: {type: Number, required: false},
-        area_of_landing: {type: Number, required: false},
-        drainage_system_present: {type: Boolean, required: false},
-        window_cover_signage: {type: Boolean, required: false}
+        floor_to_ceiling_height: {type: String, required: false},
+        natural_grade_of_floor: {type: String, required: false},
+        opening_height: {type: String, required: false},
+        opening_width: {type: String, required: false},
+        opening_area: {type: String, required: false},
+        area_of_window_well: {type: String, required: false},
+        outdoor_emergency_exit: {type: String, required: false},
+        bottom_of_clear_opening: {type: String, required: false},
+        distance_between_landing: {type: String, required: false},
+        area_of_landing: {type: String, required: false},
+        drainage_system_present: {type: String, required: false},
+        window_cover_signage: {type: String, required: false}
     }
 );
 

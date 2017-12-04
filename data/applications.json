@@ -15,8 +15,8 @@
     bottom_of_clear_opening: '9.4',
     distance_between_landing: '9.2',
     area_of_landing: '11.2',
-    drainage_system_present: 'TRUE',
-    window_cover_signage: 'TRUE'
+    drainage_system_present: 'true',
+    window_cover_signage: 'true'
   },
   {
     status:'Accepted',
@@ -30,12 +30,12 @@
     opening_width: '24.0',
     opening_area: '20.0',
     area_of_window_well: '5.0',
-    outdoor_emergency_exit: 'FALSE',
+    outdoor_emergency_exit: 'false',
     bottom_of_clear_opening: '9.0',
     distance_between_landing: '9.0',
     area_of_landing: '11.0',
-    drainage_system_present: 'FALSE',
-    window_cover_signage: 'FALSE'
+    drainage_system_present: 'true',
+    window_cover_signage: 'true'
   },
   {
     status:'Denied',
@@ -49,11 +49,11 @@
     opening_width: '24.5',
     opening_area: '20.5',
     area_of_window_well: '5.5',
-    outdoor_emergency_exit: 'FALSE',
+    outdoor_emergency_exit: 'false',
     bottom_of_clear_opening: '9.5',
     distance_between_landing: '9.5',
     area_of_landing: '11.5',
-    drainage_system_present: 'TRUE',
-    window_cover_signage: 'TRUE'
+    drainage_system_present: 'true',
+    window_cover_signage: 'true'
   }
 ]

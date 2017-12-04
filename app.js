@@ -92,7 +92,7 @@ app.get('/registerhere',function (req,res) {
 // Form page
 app.get('/form',function (req,res) {
     var user = req.session.user;
-    if(!user){
+    if(!user || user.username === 'admin'){
         res.redirect("/loginhere");
     } else {
         res.render('temp.ejs');
@@ -227,7 +227,7 @@ app.post('/formsubmission',function (req,res) {
         json.date = Date.now();
         json.user = user.email;
         json.comment = '';
-        json.floor_to_celing_height = data.floor_to_ceiling_height;;
+        json.floor_to_ceiling_height = data.floor_to_ceiling_height;;
         json.natural_grade_of_floor = data.natural_grade_of_floor;
         json.opening_height = data.opening_height;
         json.opening_width = data.opening_width;
