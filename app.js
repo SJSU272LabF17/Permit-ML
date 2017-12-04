@@ -95,28 +95,31 @@ app.get('/form',function (req,res,next) {
 // User page (home screen / admin dashboard)
 app.get('/user', function (req, res) {
     console.log("==>GET /user");
-    console.log(req.session.user);
-    DBTool.getAllPermitApplication(function(err, applications){
-        if(err){
-            console.log(err);
-            res.redirect('/loginhere');
-        } else {
-            var jsonUser = {
-                profileInfo: {
-                    username: req.session.user.lastname + " " + req.session.user.firstname,
-                    email: req.session.user.email
-                },
-                applicationList: applications
-            };
-            res.render('user.ejs', {
-                title: 'Home',
-                data: jsonUser
-            });
-        }
-    });
+    var user = req.session.user;
+    console.log(user);
 
-
-
+    if(!user){
+        res.redirect("/loginhere");
+    } else{
+        DBTool.getAllPermitApplication(function(err, applications){
+            if(err){
+                console.log(err);
+                res.redirect('/loginhere');
+            } else {
+                var jsonUser = {
+                    profileInfo: {
+                        username: req.session.user.lastname + " " + req.session.user.firstname,
+                        email: req.session.user.email
+                    },
+                    applicationList: applications
+                };
+                res.render('user.ejs', {
+                    title: 'Home',
+                    data: jsonUser
+                });
+            }
+        });
+    }
 });
 app.get('/applications/:id', function(req, res){
     var id = req.params.id;
@@ -243,11 +246,11 @@ app.post('/redirectHome',function (req, res) {
     }
 });
 
-app.post('/logout', function(req,res) {
+app.get('/logout', function(req,res) {
     // console.log(req.session.user);
     req.session.destroy();
     // console.log('Session Destroyed');
-    res.status(200).send();
+    res.redirect("/loginhere");
 });
 
 app.post('/afterLogin', function(req, res) {
@@ -275,10 +278,7 @@ app.post('/afterLogin', function(req, res) {
                 },
                 applicationList: applications
             };
-            res.render('user.ejs', {
-                title: 'Home',
-                data: jsonUser
-            });
+            res.redirect('/user');
         }
     });
         } else{
