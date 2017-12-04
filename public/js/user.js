@@ -84,7 +84,7 @@ USR.populateTable = function() {
 
   // Make table rows links
   $(".ccell").click(function() {
-    $.get('/applications/' + $(this).parent().children().first().html());
+      window.location.href = '/applications/' + $(this).parent().children().first().html();
     /*USR.post('/details', {
       applicationId: $(this).parent().children().first().html()
     });*/
