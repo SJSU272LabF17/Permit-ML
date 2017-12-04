@@ -31,7 +31,8 @@ console.log("sdds");
                 username:document.getElementById("inputUsername").value,
                 password:document.getElementById("inputPassword").value
             }
-            fetch('http://localhost:8000/afterLogin',{
+
+            fetch('http://localhost:8004/afterLogin',{
                 method:"post",
                 body:JSON.stringify(data),
                 headers:{

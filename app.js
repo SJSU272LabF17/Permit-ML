@@ -68,7 +68,11 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 
 var corsOptions = {
+<<<<<<< HEAD
     origin: 'http://localhost:8000',
+=======
+    origin: 'http://localhost:8004',
+>>>>>>> ea782d282e351677fc505582ff50451a64d53bd9
     credentials: true,
 }
 app.use(cors(corsOptions))
@@ -128,9 +132,16 @@ app.get('/user', function (req, res) {
     // TODO: get permit applications from the
     // database, to create this object correctly
     var jsonUser = {
+<<<<<<< HEAD
         profileInfo:{
             username:'test',
             email:'test@gmail.com'
+=======
+
+        profileInfo: {
+            username: 'admin',//req.params.username,
+            email: 'test@gmail.com'
+>>>>>>> ea782d282e351677fc505582ff50451a64d53bd9
         },
 
         applicationList: [
@@ -287,15 +298,6 @@ app.post('/formsubmission',function (req,res) {
     });
 
 });
-/*
-app.post('/logi',function(req,res,next){
-console.log("dvva");
-    console.log(req.body);
-    res.status(200);
-    res.redirect('/user')
-
-});
-*/
 
 
 // Login page
@@ -476,7 +478,7 @@ app.post('/files', upload.any(), function(req, res) {
     res.status(200).send(json);
 });
 
-var port = process.env.PORT || 8000;
+var port = process.env.PORT || 8004;
 var server = app.listen(port, function(){
     console.log('App listening on port %s', port);
 });

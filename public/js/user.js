@@ -145,7 +145,7 @@ USR.getStatusSelect = function(selectedValue, row) {
     $.post("/save", {
       id: row.children().first().html(),
       status: $(this).find(":selected").html(),
-      comment: row.children().last().html()
+      comment: row.children().last().children().first().val()
     });
   });
 
