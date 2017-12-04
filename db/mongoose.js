@@ -2,7 +2,7 @@
 //Set up mongoose connection
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-var mongoURL = "mongodb://localhost:27017/BuildingPermit";
+var mongoURL = "mongodb://database:27017/BuildingPermit";
 mongoose.connect(mongoURL, {
     useMongoClient: true
 });
