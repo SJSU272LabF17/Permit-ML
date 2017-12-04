@@ -4,8 +4,8 @@ AWS.config.update({region:'us-east-1'});
 var machinelearning = new AWS.MachineLearning({
 //endpoint:'https://realtime.machinelearning.us-east-1.amazonaws.com',//(String)—TheendpointURItosendrequeststo.Thedefaultendpointisbuiltfromtheconfiguredregion.Theendpointshouldbeastringlike'https://{service}.{region}.amazonaws.com'.
 
-    accessKeyId:'AKIAJCRHCIG7HHV4MQMA',//(String)—yourAWSaccesskeyID.
-    secretAccessKey:'qV6r5Uz9T7cAJvMv5ASgHYR2p5qjeBivH3YbW8iF'//(String)—yourAWSsecretaccesskey.
+    accessKeyId:'AKIAIP5O3AAM72J4J2PA',//(String)—yourAWSaccesskeyID.
+    secretAccessKey:'dRLewuiEeMhTA1AaZBIH8FRp3Ij1tQPTYylRHUAd'//(String)—yourAWSsecretaccesskey.
     //region:'us-east-1'
 });
 // console.log(machinelearning);
@@ -29,13 +29,13 @@ exports.predict = function(data, callback) {
 
 
 // - Get Model information
-// var params = {
-//   MLModelId: 'ml-SxI4oUce22b', /* required */
-//   Verbose: true
-// };
-// machinelearning.getMLModel(params, function(err, data) {
-//   if (err) console.log(err, err.stack); // an error occurred
-//   else     console.log(data);           // successful response
-// });
-//
+var params = {
+  MLModelId: 'ml-SxI4oUce22b', /* required */
+  Verbose: true
+};
+machinelearning.getMLModel(params, function(err, data) {
+  if (err) console.log(err, err.stack); // an error occurred
+  else     console.log(data);           // successful response
+});
+
 

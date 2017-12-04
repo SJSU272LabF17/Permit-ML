@@ -9,7 +9,7 @@ var PermitApplicationSchema = Schema(
         date: {type: Date, required: true, default: Date.now()},
         user: {type: String, required: true},
         comment: {type: String, required: false},
-        floor_to_celing_height: {type: Number, required: false},
+        floor_to_ceiling_height: {type: Number, required: false},
         natural_grade_of_floor: {type: Number, required: false},
         opening_height: {type: Number, required: false},
         opening_width: {type: Number, required: false},
