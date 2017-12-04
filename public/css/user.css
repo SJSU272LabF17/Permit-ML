@@ -117,10 +117,10 @@ table.appTable tbody td:last-child {
   overflow: hidden;
 }
 #adminLeftDiv {
-  width: 60%;
+  width: 100%;
   float: left;
   height: 500px;
-  padding: 0px 5px 0px 0px;
+  padding: 0px 0px 0px 0px;
 }
 /*#adminCenterDiv {
   width: 30%;
@@ -130,10 +130,10 @@ table.appTable tbody td:last-child {
   padding: 0px 5px 0px 5px;
 }*/
 #adminRightDiv {
-  width: 40%;
+  width: 0%;
   float: left;
   height: 500px;
-  padding: 0px 0px 0px 5px;
+  padding: 0px 0px 0px 0px;
 }
 
 #adminSummaryTable {

@@ -19,7 +19,7 @@ USR.setDataObj = function(data) {
   var appList = data.applicationList;
   for(var i=0; i<appList.length; i++) {
     var app = appList[i];
-    this.objMap[app.id] = app;
+    this.objMap[app._id] = app;
   }
 
   this.populateTable();
@@ -44,7 +44,7 @@ USR.populateTable = function() {
     // ID
     $("<td/>")
       .addClass("adminTblColId ccell")
-      .html(app.id)
+      .html(app._id)
       .appendTo(row);
 
     // User
@@ -90,7 +90,7 @@ USR.populateTable = function() {
   });
 
   // Fix header width
-  if(bdy.length > 0) {
+  if(bdy.children().length > 0) {
     var bodyCellWidth;
     for(var i=1; i<USR.adminCols; i++) {
       bodyCellWidth = $("#adminSummaryTable td:nth-child("+i+")").width();
@@ -99,20 +99,14 @@ USR.populateTable = function() {
     bodyCellWidth = $("#adminSummaryTable td:last-child()").width();
     $("#adminSummaryTable th:last-child()").width(bodyCellWidth+USR.scrollbarWidth);
   } else {
-    $("#adminSummaryTable th").width("16.666%");
+    $("#adminSummaryTable th").width("50%");
   }
 };
 
 // Interpret the boolean prediction and return a string.
 USR.interpretPrediction = function(prediction) {
-  if(prediction !== undefined &&
-     prediction !== null &&
-     prediction.toLowerCase() === "true") {
-    return "Accepted";
-  } else {
-    return "Denied";
-  }
-}
+  return prediction ? "Accepted" : "Denied";
+};
 
 // Build the status select dropdown.
 USR.getStatusSelect = function(selectedValue, row) {
