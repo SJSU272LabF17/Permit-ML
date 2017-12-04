@@ -219,10 +219,6 @@ app.post('/formsubmission',function (req,res) {
         });
     });
 });
-<<<<<<< HEAD
-
-=======
->>>>>>> cf03bbd7e1ac849f5eacae69c6c3e08e0451bad4
 
 
 // Login page
