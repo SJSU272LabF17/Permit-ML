@@ -5,7 +5,7 @@
   "scripts": {
     "setup-mongodb": "sh ./data/import-data.sh",
     "prestart": "npm run setup-mongodb",
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "test": "mocha --recursive --exit"
   },
   "dependencies": {
@@ -31,6 +31,7 @@
     "chai": "^4.1.2",
     "chai-arrays": "^2.0.0",
     "chai-http": "^3.0.0",
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "nodemon": "^1.12.1"
   }
 }
