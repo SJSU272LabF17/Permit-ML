@@ -1,11 +1,14 @@
 
 var AWS = require('aws-sdk');
 AWS.config.update({region:'us-east-1'});
+
+console.log("env");
+
 var machinelearning = new AWS.MachineLearning({
 //endpoint:'https://realtime.machinelearning.us-east-1.amazonaws.com',//(String)—TheendpointURItosendrequeststo.Thedefaultendpointisbuiltfromtheconfiguredregion.Theendpointshouldbeastringlike'https://{service}.{region}.amazonaws.com'.
 
-    accessKeyId:'AKIAIP5O3AAM72J4J2PA',//(String)—yourAWSaccesskeyID.
-    secretAccessKey:'dRLewuiEeMhTA1AaZBIH8FRp3Ij1tQPTYylRHUAd'//(String)—yourAWSsecretaccesskey.
+    accessKeyId: process.env.AWS_ACCESS_KEY,//(String)—yourAWSaccesskeyID.
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY//(String)—yourAWSsecretaccesskey.
     //region:'us-east-1'
 });
 // console.log(machinelearning);

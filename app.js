@@ -2,6 +2,8 @@ var express = require('express');
 var path = require('path');
 global.appRootDir = path.resolve(__dirname);
 
+require('dotenv').config();
+
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
