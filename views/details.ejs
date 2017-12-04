@@ -30,7 +30,8 @@
     <title><%= title %></title>
 
   </head>
-  <body onload='DTL.setDataObj(<%- JSON.stringify(data) %>)'>
+  <!--<body onload='DTL.setDataObj(<%- JSON.stringify(data) %>)'>-->
+  <body>
 
     <header id="header">
       <div class="container">
@@ -56,7 +57,7 @@
         <table id="detailsTable">
             <tr>
               <td class="dColLbl">ID</td>
-              <td class="dColTxt"><%= data.id %></td>
+              <td class="dColTxt"><%= data._id %></td>
               <td class="dColLbl">Opening Area (sq. ft.)</td>
               <td class="dColTxt"><%= data.opening_area %></td>
             </tr>
@@ -80,7 +81,7 @@
             </tr>
             <tr>
               <td class="dColLbl">Floor-to-Ceiling Height (ft.)</td>
-              <td class="dColTxt"><%= data.floor_to_ceiling_height %></td>
+              <td class="dColTxt"><%= data.floor_to_celing_height %></td>
               <td class="dColLbl">Distance Between Landings (ft.)</td>
               <td class="dColTxt"><%= data.distance_between_landing %></td>
             </tr>

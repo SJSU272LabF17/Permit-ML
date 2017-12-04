@@ -84,9 +84,10 @@ USR.populateTable = function() {
 
   // Make table rows links
   $(".ccell").click(function() {
-    USR.post('/details', {
+    $.get('/applications/' + $(this).parent().children().first().html());
+    /*USR.post('/details', {
       applicationId: $(this).parent().children().first().html()
-    });
+    });*/
   });
 
   // Fix header width
@@ -194,9 +195,10 @@ $(document).ready(function($) {
 
   // Make table rows links
   $(".clickable-row").click(function() {
-    USR.post('/details', {
+    $.get('/applications/' + $(this).children().first().html());
+    /*USR.post('/details', {
       applicationId: $(this).children().first().html()
-    });
+    });*/
   });
 
 
