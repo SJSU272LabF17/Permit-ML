@@ -116,10 +116,11 @@ app.get('/user', function (req, res) {
                     var jsonUser = {
                         profileInfo: {
                             username: user.username,
-                            email: ""
+                            email: user.username
                         },
                         applicationList: applications
                     };
+                    console.log(jsonUser);
                     res.render('user.ejs', {
                         title: 'Home',
                         data: jsonUser
@@ -166,38 +167,6 @@ app.get('/applications/:id', function(req, res){
         }
     });
 });
-// Details page
-app.post('/details', function (req, res) {
-    // TODO: get the permit application from the
-    // database, to set object values correctly
-    var jsonDetails = {
-        id: 'A001',
-        status:'Pending',
-        prediction_result:'TRUE',
-        date: '2017-11-17 15:21:05',
-        user: 'test1',
-        comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna',
-        floor_to_ceiling_height:'8.8',
-        natural_grade_of_floor: '0.6',
-        opening_height: '39.4',
-        opening_width: '24.8',
-        opening_area: '20.8',
-        area_of_window_well: '5.6',
-        outdoor_emergency_exit: 'false',
-        bottom_of_clear_opening: '9.4',
-        distance_between_landing: '9.2',
-        area_of_landing: '11.2',
-        drainage_system_present: 'TRUE',
-        window_cover_signage: 'TRUE'
-    };
-
-    res.render('details.ejs', {
-        title: 'Details',
-        data: jsonDetails
-    });
-});
-
-
 
 // Save an application after an admin edits
 app.post('/save', function (req, res) {
