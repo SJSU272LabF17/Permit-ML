@@ -11,6 +11,8 @@ USR.scrollbarWidth = 17;
 
 // Get the data from the server on load, and store it.
 USR.setDataObj = function(data) {
+  console.log("on load applications");
+  console.log(data);
   this.dataObj = data;
 
   // Fill the map.

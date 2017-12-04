@@ -88,8 +88,13 @@ app.get('/registerhere',function (req,res) {
 
 
 // Form page
-app.get('/form',function (req,res,next) {
-    res.render('temp.ejs')
+app.get('/form',function (req,res) {
+    var user = req.session.user;
+    if(!user){
+        res.redirect("/loginhere");
+    } else {
+        res.render('temp.ejs');
+    }
 });
 
 // User page (home screen / admin dashboard)
@@ -101,24 +106,49 @@ app.get('/user', function (req, res) {
     if(!user){
         res.redirect("/loginhere");
     } else{
-        DBTool.getAllPermitApplication(function(err, applications){
-            if(err){
-                console.log(err);
-                res.redirect('/loginhere');
-            } else {
-                var jsonUser = {
-                    profileInfo: {
-                        username: req.session.user.lastname + " " + req.session.user.firstname,
-                        email: req.session.user.email
-                    },
-                    applicationList: applications
-                };
-                res.render('user.ejs', {
-                    title: 'Home',
-                    data: jsonUser
-                });
-            }
-        });
+        if(user.username === 'admin'){ // if admin
+            DBTool.getAllPermitApplication(function(err, applications){
+                if(err){
+                    console.log(err);
+                    res.redirect('/loginhere');
+                } else {
+                    console.log("get permit application: "+ applications.length);
+                    var jsonUser = {
+                        profileInfo: {
+                            username: user.username,
+                            email: ""
+                        },
+                        applicationList: applications
+                    };
+                    res.render('user.ejs', {
+                        title: 'Home',
+                        data: jsonUser
+                    });
+                }
+            });
+        } else{ // if normal user
+
+            DBTool.getUserPermitApplication(user.email, function(err, applications){
+                if(err){
+                    console.log(err);
+                    res.redirect('/loginhere');
+                } else {
+                    console.log("get permit application: "+ applications.length);
+                    var jsonUser = {
+                        profileInfo: {
+                            username: req.session.user.lastname + " " + req.session.user.firstname,
+                            email: req.session.user.email
+                        },
+                        applicationList: applications
+                    };
+                    res.render('user.ejs', {
+                        title: 'Home',
+                        data: jsonUser
+                    });
+                }
+            });
+        }
+
     }
 });
 app.get('/applications/:id', function(req, res){
@@ -264,8 +294,7 @@ app.post('/afterLogin', function(req, res) {
         if (results.status_code == 200){
             req.session.user = results.user;
             console.log("req.session.user = "+req.session.user);
-            // console.log("session initilized, return status 200");
-            // res.redirect("/user");
+            if(results)
             DBTool.getAllPermitApplication(function(err, applications){
         if(err){
             console.log(err);
