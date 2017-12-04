@@ -172,9 +172,35 @@ app.get('/applications/:id', function(req, res){
 
 // Save an application after an admin edits
 app.post('/save', function (req, res) {
-    // TODO: persist the application
     console.log(req.body);
-    res.end();
+    // res.end();
+    console.log('save application');
+    const data = req.body;
+    const id = data.id;
+
+    // { id: '5a25ba04632625cdc066190d',
+    //     status: 'Accepted',
+    //     comment: 'comment 1' }
+
+    PermitApplication.findByIdAndUpdate(
+        id,
+        {
+            $set: {
+                status: data.status,
+                comment: data.comment,
+            },
+        },
+        (err, result) => {
+            if (err) res.json(err);
+            PermitApplication
+                .findById(id)
+                .exec((err, result) => {
+                    console.log('getOne result=', result);
+                    if (err) res.json(err);
+                    res.json(result);
+                });
+        }
+    );
 });
 
 
