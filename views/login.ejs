@@ -31,6 +31,7 @@
                 username:document.getElementById("username").value,
                 password:document.getElementById("password").value
             }
+
             fetch('http://localhost:8004/afterLogin',{
                 method:"post",
                 body:JSON.stringify(data),
