@@ -288,15 +288,6 @@ app.post('/formsubmission',function (req,res) {
     });
 
 });
-/*
-app.post('/logi',function(req,res,next){
-console.log("dvva");
-    console.log(req.body);
-    res.status(200);
-    res.redirect('/user')
-
-});
-*/
 
 
 // Login page
