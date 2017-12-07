@@ -24,13 +24,11 @@
     <script src="/lib/counterup/counterup.min.js"></script>
     <script src="/lib/superfish/hoverIntent.js"></script>
     <script src="/lib/superfish/superfish.min.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="/js/details.js"></script>
+    <script src="/js/main.js"></script> 
 
     <title><%= title %></title>
 
   </head>
-  <!--<body onload='DTL.setDataObj(<%- JSON.stringify(data) %>)'>-->
   <body onload="alert(<%- JSON.stringify(data) %>)">
 
     <header id="header">
@@ -42,8 +40,9 @@
 
         <nav id="nav-menu-container">
           <ul class="nav-menu">
-            <li><a href="javascript:DTL.showProfile();">Profile</a></li>
-            <li><a href="javascript:DTL.logoutUser();">Logout</a></li>
+            <li><a href="/user">Profile</a></li>
+            <li><a href="/links">Links</a></li>
+            <li><a href="/logout">Logout</a></li>
           </ul>
         </nav>
       </div>

@@ -251,9 +251,16 @@ app.post('/formsubmission',function (req,res) {
 });
 
 
+// Links page
+app.get('/links', function (req,res) {
+  res.render('links.ejs', {
+    title: 'Links'
+  });
+});
+
 // Login page
 app.get('/loginhere',function(req,res,next){
-   res.render('login.ejs');
+  res.render('login.ejs');
 });
 
 

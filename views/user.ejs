@@ -41,10 +41,8 @@
 
         <nav id="nav-menu-container">
           <ul class="nav-menu">
-            <% if (data.profileInfo.username !== "admin") { %>
-            <!-- Only show profile menu option for regular users -->
-            <li><a href="#">Profile</a></li>
-            <% } %>
+            <li><a href="/user">Profile</a></li>
+            <li><a href="/links">Links</a></li>
             <li><a href="/logout">Logout</a></li>
           </ul>
         </nav>
