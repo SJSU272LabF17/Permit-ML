@@ -1,6 +1,6 @@
 
 
-#Introduction
+# Introduction
 Building Permit Process Enhancement using Machine Learning
 
 The process to obtain a building permit in San Jose is slow and tedious, primarily due
@@ -12,7 +12,7 @@ not most of the review.
 We are building a web application to predict if a user's permit will be approved or not.
 We are using a machine learning model based on logistic regression to classify the data.
 
-#How to Run
+# How to Run
 Open terminal:
 ````
 npm install
