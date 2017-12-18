@@ -21,4 +21,21 @@ http://34.201.136.52:8004/
 
 ![arch](https://user-images.githubusercontent.com/31807232/34096662-0194fd8c-e38b-11e7-8bbc-a89f3c64150f.png)
 
+# Technology Stack
+* NodeJS
+* Express
+* MongoDB
+* Amazon Web Services
+* HTML/CSS
 
+# Contributors
+1. Arpita Saha
+2. Jiaqi Qin
+3. Matthew Kwong
+4. Pritam Meher
+
+# Future Scope:
+* Provide table sorting/filtering, e.g. so that admins can view only applications which are pending.
+* Add useful graphs or statistics to the admin page, to enable more complex analysis.
+* Support other permit application types. For the purposes of providing a proof of concept, we chose to demonstrate a basement permit application, but there are several other permit application types available in San Jose, and the service could easily be extended to support them.
+* Incorporate building plans/blueprints into the machine learning process. Users could be required to upload an image of their building plans or blueprints, computer vision techniques could be used to analyze the image, and the result could be used as a part of the machine learning model.
